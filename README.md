@@ -177,3 +177,116 @@ Una vez que la página cargue en el navegador de tu teléfono, el proceso de ins
     "vite-plugin-pwa": "^1.0.2"
   }
 }
+
+
+## ¿Cómo implementarlo en tu proyecto?
+Vamos a configurarlo. Verás qué potente es.
+
+Paso 1: Instalar MSW
+En tu terminal, dentro del directorio de tu proyecto, ejecuta:
+
+bash
+npm install msw --save-dev
+Paso 2: Definir los "Manejadores" (Handlers)
+Estos son los que definen qué responder cuando se hace una petición a una URL específica.
+
+Crea una nueva carpeta src/mocks y dentro un archivo handlers.js.
+
+javascript
+ Show full code block 
+// src/mocks/handlers.js
+import { http, HttpResponse } from 'msw';
+import { vehicles, services, alerts } from '../mockData'; // Reutilizamos tus datos de prueba
+
+// Añadimos un pequeño retardo para simular una llamada de red real
+const delayedResponse = (data, delay = 150) => {
+  return new Promise(resolve => setTimeout(() => resolve(HttpResponse.json(data)), delay));
+};
+
+export const handlers = [
+  // Intercepta la petición GET a /vehicles
+  http.get('https://api.infocar.com/vehicles', async () => {
+    return await delayedResponse(vehicles);
+  }),
+
+  // Intercepta la petición GET a /services
+  http.get('https://api.infocar.com/services', async () => {
+    return await delayedResponse(services);
+  }),
+
+  // Intercepta la petición GET a /alerts
+  http.get('https://api.infocar.com/alerts', async () => {
+    return await delayedResponse(alerts);
+  }),
+];
+Paso 3: Configurar el "Worker" para el navegador
+Ahora, en la misma carpeta src/mocks, crea el archivo browser.js.
+
+javascript
+ Show full code block 
+// src/mocks/browser.js
+import { setupWorker } from 'msw/browser';
+import { handlers } from './handlers';
+
+// Esta configuración prepara un Service Worker con los manejadores de peticiones que definimos.
+export const worker = setupWorker(...handlers);
+Paso 4: Iniciar el "Worker" en tu aplicación
+Tenemos que decirle a nuestra aplicación que inicie este "worker" cuando estemos en modo de desarrollo. El mejor sitio para esto es en tu archivo de entrada principal, src/main.jsx.
+
+Modifícalo para que quede así:
+
+main.jsx
+-8
++19
+The code change produced by Gemini cannot be automatically applied. You can manually apply the change or ask Gemini to try again.
+ Show full code block 
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <Router>
+      <App />
+    </Router>
+  </React.StrictMode>,
+)
+async function enableMocking() {
+  if (process.env.NODE_ENV !== 'development') {
+    return
+  }
+
+  const { worker } = await import('./mocks/browser.js')
+  return worker.start()
+}
+
+enableMocking().then(() => {
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode>
+      <Router>
+        <App />
+      </Router>
+    </React.StrictMode>,
+  )
+})
+Paso 5: Crear el archivo del Service Worker
+MSW necesita un archivo físico de service worker en tu carpeta public. Ejecuta este comando en la terminal:
+
+bash
+npx msw init public/ --save
+Esto creará el archivo public/mockServiceWorker.js. Es un paso que solo se hace una vez.
+
+¡Y ya está!
+Ahora, si reinicias tu servidor de desarrollo (npm run dev), ocurrirá lo siguiente:
+
+La consola del navegador te mostrará un mensaje como [MSW] Mocking enabled..
+Tu componente Dashboard se renderizará.
+Mostrará "Cargando datos..." durante un instante (por el retardo que simulamos).
+Hará las peticiones fetch a https://api.infocar.com/....
+MSW las interceptará.
+MSW responderá con los datos de tu archivo mockData.js.
+Tu Dashboard recibirá los datos, actualizará su estado y renderizará las listas VehicleList, RecentServices y Alerts con los datos, ¡como si vinieran de un backend real!
+Ahora puedes seguir construyendo toda tu aplicación, incluyendo formularios que envíen datos (POST), sin tener un backend. Simplemente añades nuevos "handlers" en src/mocks/handlers.js para cada nueva petición.
