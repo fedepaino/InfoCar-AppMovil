@@ -28,7 +28,7 @@
 .vehicle-card-image {
     width: 100px;
     /* Ancho fijo para la imagen */
-    height: 100px;
+    height: 80px;
     /* Alto fijo */
     object-fit: cover;
     /* Asegura que la imagen cubra el espacio sin deformarse */
