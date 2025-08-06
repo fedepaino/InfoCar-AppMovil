@@ -1,20 +1,17 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
+import VehicleCard from './VehicleCard'; // 1. Importamos el nuevo componente
+
 
 const VehicleList = ({ vehicles }) => {
     return (
         <div className="card">
             <h3>Vehículos Registrados</h3>
-            <ul>
-                {vehicles.map(v => (
-                    <li key={v.id}>
-                        {/* Usamos Link para navegar a la nueva página */}
-                        <Link to={`/vehicles/${v.id}`}>
-                            <h4>{v.marca} {v.modelo}</h4>
-                            <p>Kilometraje: {v.kilometraje} km</p>
-                        </Link>
-                    </li>
+            {/* 2. Usamos una lista con una clase para aplicar estilos */}
+            <ul className="vehicle-list">
+                {vehicles.map(vehicle => (
+                    // 3. Renderizamos un VehicleCard por cada vehículo
+                    <VehicleCard key={vehicle.id} vehicle={vehicle} />
                 ))}
             </ul>
         </div>

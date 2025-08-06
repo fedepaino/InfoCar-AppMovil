@@ -243,3 +243,11 @@ body {
   border-bottom: 1px solid #eee;
   padding-bottom: 10px;
 }
+
+.vehicle-list {
+  list-style-type: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}

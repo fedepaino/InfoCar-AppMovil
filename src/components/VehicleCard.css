@@ -1,0 +1,24 @@
+.vehicle-card {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    list-style-type: none;
+}
+
+.vehicle-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+}
+
+.vehicle-card-link {
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.vehicle-card h4 {
+    margin: 0 0 10px 0;
+    color: #343a40;
+}
