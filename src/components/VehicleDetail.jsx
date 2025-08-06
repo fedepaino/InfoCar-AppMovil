@@ -15,7 +15,11 @@ const VehicleDetail = ({ vehicles, services }) => {
     return (
         <div>
             <div className="card vehicle-detail-header">
+                {vehicle.imageUrl && (
+                    <img src={vehicle.imageUrl} alt={`${vehicle.marca} ${vehicle.modelo}`} style={{ maxWidth: '150px', height: 'auto', borderRadius: '8px', marginBottom: '20px' }} />
+                )}
                 <h2>{vehicle.marca} {vehicle.modelo}</h2>
+                <p><strong>Matrícula:</strong> {vehicle.matricula}</p>
                 <p><strong>Kilometraje:</strong> {vehicle.kilometraje} km</p>
                 <p><strong>Última ITV:</strong> {formatDate(vehicle.ultimaITV)}</p>
                 <div>

@@ -4,7 +4,7 @@ import { vehicles as initialVehicles, services as initialServices, alerts as ini
 export const appReducer = (state, action) => {
     switch (action.type) {
         case 'ADD_VEHICLE':
-            return { ...state, vehicles: [...state.vehicles, { ...action.payload, id: Date.now().toString() }] };
+            return { ...state, vehicles: [...state.vehicles, action.payload] };
         case 'EDIT_VEHICLE':
             return {
                 ...state,

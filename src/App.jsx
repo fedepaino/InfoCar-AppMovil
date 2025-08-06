@@ -24,7 +24,27 @@ function App() {
   }, [state]);
 
   // 5. Adaptar las funciones de manejo para que usen `dispatch`
-  const handleAddVehicle = (newVehicle) => dispatch({ type: 'ADD_VEHICLE', payload: newVehicle });
+  const handleAddVehicle = async (vehicleData) => {
+    try {
+      const response = await fetch('https://api.infocar.com/vehicles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(vehicleData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al añadir el vehículo desde el servidor mock.');
+      }
+
+      const savedVehicle = await response.json(); // El vehículo con el ID asignado por MSW
+      dispatch({ type: 'ADD_VEHICLE', payload: savedVehicle });
+      return true; // Indica éxito para que el formulario pueda reaccionar (ej. redirigir)
+    } catch (error) {
+      console.error("Fallo al añadir vehículo:", error);
+      // Aquí podrías despachar una acción para mostrar un error en la UI
+      return false; // Indica fallo
+    }
+  };
   const handleEditVehicle = (vehicleId, updatedData) => dispatch({ type: 'EDIT_VEHICLE', payload: { vehicleId, updatedData } });
   const handleAddMaintenance = (newMaintenance) => dispatch({ type: 'ADD_MAINTENANCE', payload: newMaintenance });
   const handleAddAlert = (newAlert) => dispatch({ type: 'ADD_ALERT', payload: newAlert });
