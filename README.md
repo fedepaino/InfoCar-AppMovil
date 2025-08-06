@@ -48,7 +48,7 @@ export default defineConfig({
       },
 
       // 'includeAssets' es otra forma de asegurar que archivos estáticos importantes se cacheen.
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['pwa-192x192.png', 'pwa-512x512.png'],
       
       // 'manifest' es la configuración del archivo manifest.webmanifest.
       // Este archivo le dice al navegador cómo debe comportarse tu app cuando se "instala".
@@ -67,19 +67,8 @@ export default defineConfig({
           {
             src: 'pwa-512x512.png',
             sizes: '512x512',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
             type: 'image/png',
             purpose: 'any'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'maskable'
           }
         ]
       }
@@ -93,6 +82,33 @@ Para que tu aplicación se vea bien en los dispositivos y el navegador sepa qué
 
 Crear los iconos: Crea los iconos que definiste en el manifest (por ejemplo, pwa-192x192.png y pwa-512x512.png) y colócalos en la carpeta public.
 Actualizar index.html: Añade las siguientes etiquetas dentro del <head> en tu archivo public/index.html.
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Asegúrate de que el viewport esté configurado correctamente -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Icono principal -->
+    <link rel="icon" type="image/png" href="/pwa-192x192.png" />
+
+    <!-- Color de la barra de estado en móviles -->
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Icono para dispositivos Apple -->
+    <link rel="apple-touch-icon" href="/pwa-192x192.png" sizes="192x192">
+
+    <!-- Referencia al manifest -->
+    <link rel="manifest" href="/manifest.webmanifest">
+    
+    <title>Vite + React</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
 
 ## Paso 4: Construir y verificar
 Las funcionalidades de PWA (como el Service Worker) se generan principalmente para el build de producción.
@@ -129,3 +145,35 @@ En la barra de direcciones, escribe la URL de la red que te dio el comando npm r
 
 ## Paso 4: Instala la aplicación (PWA)
 Una vez que la página cargue en el navegador de tu teléfono, el proceso de instalación varía un poco según el sistema operativo:
+
+## Asi se deveria ver tu package.json
+{
+  "name": "info-car",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview --host"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.7.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react-swc": "^3.10.2",
+    "eslint": "^9.30.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "vite": "^7.0.4",
+    "vite-plugin-pwa": "^1.0.2"
+  }
+}
