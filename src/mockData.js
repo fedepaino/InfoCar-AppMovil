@@ -1,4 +1,4 @@
-export const vehicles = [
+export let vehicles = [
     {
         id: 'v1',
         marca: 'Ford',
