@@ -1,9 +1,11 @@
 .vehicle-card {
-    background-color: #f8f9fa;
+    background-color: #f4f6f8;
     border: 1px solid #e9ecef;
     border-radius: 8px;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     list-style-type: none;
+    overflow: hidden;
+    /* Para que la imagen no se salga del borde redondeado */
 }
 
 .vehicle-card:hover {
@@ -12,13 +14,43 @@
 }
 
 .vehicle-card-link {
-    display: block;
-    padding: 15px;
+    display: flex;
+    /* Usamos flexbox */
+    align-items: center;
+    /* Centramos verticalmente */
+    padding: 10px;
     text-decoration: none;
     color: inherit;
+    gap: 15px;
+    /* Espacio entre la imagen y el texto */
+}
+
+.vehicle-card-image {
+    width: 100px;
+    /* Ancho fijo para la imagen */
+    height: 100px;
+    /* Alto fijo */
+    object-fit: cover;
+    /* Asegura que la imagen cubra el espacio sin deformarse */
+    border-radius: 6px;
+    flex-shrink: 0;
+    /* Evita que la imagen se encoja */
+}
+
+.vehicle-card-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .vehicle-card h4 {
-    margin: 0 0 10px 0;
+    margin: 0 0 5px 0;
+    /* Menos margen inferior */
     color: #343a40;
+}
+
+.vehicle-card p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.9em;
 }
