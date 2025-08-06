@@ -23,6 +23,17 @@ export const handlers = [
         return await delayedResponse(alerts);
     }),
 
+    // Intercepta la petición de verificación (preflight) OPTIONS para CORS
+    http.options('https://api.infocar.com/vehicles', () => {
+        return new HttpResponse(null, {
+            status: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type',
+            },
+        });
+    }),
     // Intercepta la petición POST a /vehicles para crear un nuevo coche
     http.post('https://api.infocar.com/vehicles', async ({ request }) => {
         const newCarData = await request.json();
@@ -39,6 +50,10 @@ export const handlers = [
         vehicles.push(newVehicle);
 
         // Respondemos con el vehículo creado y un status 201 (Created)
-        return HttpResponse.json(newVehicle, { status: 201 });
+        // Añadimos la cabecera CORS para permitir la petición desde el frontend
+        return HttpResponse.json(newVehicle, {
+            status: 201,
+            headers: { 'Access-Control-Allow-Origin': '*' },
+        });
     }),
 ];
