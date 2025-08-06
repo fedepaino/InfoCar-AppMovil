@@ -17,7 +17,7 @@ export default defineConfig({
       // 'workbox' genera el service worker.
       // 'globPatterns' le dice qué archivos debe cachear para que la app funcione offline.
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg}'],
         
         // --- AÑADIR ESTO ---
         // Caching para las peticiones a la API en tiempo de ejecución
